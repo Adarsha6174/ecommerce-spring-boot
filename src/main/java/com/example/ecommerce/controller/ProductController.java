@@ -48,8 +48,15 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAll() {
-        return ResponseEntity.ok(productService.getAllWithInventory());
-    }
+
+        System.out.println("Entered");
+
+        List<ProductDTO> products =
+                productService.getAllWithInventory();
+
+        System.out.println(products);
+
+        return ResponseEntity.ok(products);}
 
     @GetMapping("/search")
     public ResponseEntity<Page<Product>> search(

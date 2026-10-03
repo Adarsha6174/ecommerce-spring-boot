@@ -79,10 +79,38 @@ public class ProductServiceImpl implements ProductService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
 	public List<ProductDTO> getAllWithInventory() {
-		// TODO Auto-generated method stub
-		return null;
+
+	    List<Product> products = productRepository.findAll();
+
+	    return products.stream()
+	            .map(product -> {
+
+	                ProductDTO dto = new ProductDTO();
+
+	                dto.setId(product.getId());
+	                dto.setName(product.getName());
+	                dto.setDescription(product.getDescription());
+	                dto.setPrice(product.getPrice());
+	                dto.setSku(product.getSku());
+	                dto.setBrand(product.getBrand());
+	                dto.setImageUrl(product.getImageUrl());
+	                dto.setActive(product.isActive());
+
+	                inventoryRepository.findByProductId(product.getId())
+	                        .ifPresent(inventory ->
+	                                dto.setAvailableQuantity(inventory.getAvailableQuantity())
+	                        );
+
+	                return dto;
+	            })
+	            .toList();
 	}
+
+//	@Override
+//	public List<ProductDTO> getAllWithInventory() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 }
